@@ -29,6 +29,10 @@ pub fn pd_set(name: &str, val: u64) {
     PD_CACHE.lock().insert(String::from(name), val);
 }
 
+pub fn pd_call0(name: &str) -> u64 {
+    unsafe { jmp0(pd_get(name)) }
+}
+
 pub fn pd_call2(name: &str, arg1: u64, arg2: u64) -> u64 {
     unsafe { jmp2(arg1, arg2, pd_get(name)) }
 }
@@ -36,6 +40,7 @@ pub fn pd_call2(name: &str, arg1: u64, arg2: u64) -> u64 {
 extern "C" {
     fn jmp_pd_get(strptr: u64, sz: usize) -> u64;
     fn jmp_pd_set(stprtr: u64, sz: usize, val: u64) -> u64;
+    fn jmp0(ptr: u64) -> u64;
     fn jmp2(arg1: u64, arg2: u64, ptr: u64) -> u64;
 }
 
@@ -51,6 +56,8 @@ jmp_pd_set:
     mov rax, qword ptr [rax]
     jmp rax
 
+jmp0:
+    jmp rdi
 jmp2:
     jmp rdx
 "
