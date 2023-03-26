@@ -9,6 +9,7 @@ pub mod asm;
 pub mod daisogen;
 pub mod panic;
 pub mod print;
+pub mod sync;
 
 pub use alloc::boxed;
 pub use alloc::string;
@@ -16,6 +17,7 @@ pub use alloc::vec;
 pub use core::mem;
 
 pub mod collections {
+    pub use alloc::collections::VecDeque;
     pub use hashbrown::*;
 }
 
